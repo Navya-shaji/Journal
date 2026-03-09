@@ -37,6 +37,12 @@ mongoose.connect(process.env.MONGODB_URI)
         console.error('❌ MongoDB Connection Error:', err.message);
     });
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Server is running on http://localhost:${PORT}`);
-});
+// Conditionally listen for local development
+if (require.main === module) {
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`🚀 Server is running on http://localhost:${PORT}`);
+    });
+}
+
+// Export the app for Vercel functions
+module.exports = app;
