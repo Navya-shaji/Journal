@@ -2,15 +2,8 @@ import axios from 'axios';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const getApiBase = () => {
-    if (Platform.OS === 'web') {
-        return window.location.hostname;
-    }
-    return '192.168.24.239';
-};
-
-const API_BASE = getApiBase();
-const API_URL = `http://${API_BASE}:5000/api/entries`;
+// Live Production URL from Render
+const API_URL = `https://journal-w9ls.onrender.com/api/entries`;
 
 // Helper to get authorization headers
 const getAuthHeader = async () => {
