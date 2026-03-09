@@ -1,0 +1,37 @@
+export const theme = {
+    colors: {
+        background: '#FDF6F8',
+        cardWhite: '#FFFFFF',
+        primaryPink: '#FFC4D0',
+        softLavender: '#E2D1F9',
+        mintGreen: '#D8F3DC',
+        text: '#4A4A4A',
+        subText: '#8E8E8E',
+        accent: '#B8A3CC',
+        buttonPink: '#FFB1C1',
+        border: '#F0E0E5',
+        moodHappy: '#FFD1DC',
+        moodNeutral: '#E2D1F9',
+        moodSad: '#D8F3DC',
+        // Vintage/Scrapbook Theme
+        vintageBg: '#5D4037',
+        vintagePaper: '#FDF5E6',
+        vintageRibbon: '#795548',
+        vintageText: '#3E2723',
+        vintageAccent: '#A1887F',
+    },
+    spacing: {
+        xs: 4,
+        sm: 8,
+        md: 16,
+        lg: 24,
+        xl: 32,
+    },
+    borderRadius: {
+        sm: 8,
+        md: 16,
+        lg: 24,
+        xl: 32,
+        round: 50,
+    }
+};
