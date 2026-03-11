@@ -78,6 +78,15 @@ export default function AddEntryScreen({ navigation, route }) {
 
     const user = route.params?.userId || 'no-id';
 
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        // Force focus on mount for web/mobile
+        if (inputRef.current) {
+            setTimeout(() => inputRef.current.focus(), 250);
+        }
+    }, []);
+
     const handleSave = async () => {
         if (!content.trim()) {
             Alert.alert('Empty Entry', 'Please write something in your book.');
@@ -175,20 +184,20 @@ export default function AddEntryScreen({ navigation, route }) {
 
                 <View style={[styles.page, { backgroundColor: pageTheme.color }]}>
                     {pageTheme.lined && (
-                        <View style={styles.linesContainer}>
-                            {Array(25).fill(0).map((_, i) => (
+                        <View style={styles.linesContainer} pointerEvents="none">
+                            {(Array(25).fill(0)).map((_, i) => (
                                 <View key={i} style={styles.line} />
                             ))}
                         </View>
                     )}
 
-                    <View style={styles.binding}>
-                        {Array(15).fill(0).map((_, i) => (
+                    <View style={styles.binding} pointerEvents="none">
+                        {(Array(15).fill(0)).map((_, i) => (
                             <View key={i} style={styles.hole} />
                         ))}
                     </View>
 
-                    <View style={[styles.stickerLayer, { pointerEvents: 'box-none' }]}>
+                    <View style={styles.stickerLayer} pointerEvents="box-none">
                         {(activeStickers || []).map((s) => (
                             <DraggableSticker
                                 key={s.id}
@@ -199,9 +208,10 @@ export default function AddEntryScreen({ navigation, route }) {
                     </View>
 
                     <TextInput
+                        ref={inputRef}
                         style={[styles.input, { color: pageTheme.text }]}
                         placeholder="Write your story here..."
-                        placeholderTextColor={pageTheme.text + '40'}
+                        placeholderTextColor={pageTheme.text + '80'}
                         multiline
                         value={content}
                         onChangeText={setContent}
@@ -269,10 +279,11 @@ const styles = StyleSheet.create({
     page: {
         flex: 1,
         borderRadius: 8,
-        padding: 35,
         backgroundColor: '#fff',
         borderLeftWidth: 12,
         borderLeftColor: 'rgba(0,0,0,0.15)',
+        overflow: 'hidden',
+        position: 'relative',
         ...Platform.select({
             web: { boxShadow: '0px 15px 15px rgba(0,0,0,0.4)' },
             default: { shadowColor: '#000', shadowOpacity: 0.4, shadowRadius: 15, elevation: 25 }
@@ -299,14 +310,15 @@ const styles = StyleSheet.create({
     },
     stickerLayer: { ...StyleSheet.absoluteFillObject, zIndex: 10 },
     input: {
-        flex: 1,
-        width: '100%',
+        ...StyleSheet.absoluteFillObject,
+        paddingHorizontal: 35,
+        paddingTop: 45,
         fontSize: 19,
-        lineHeight: 29,
+        lineHeight: 28,
         textAlignVertical: 'top',
-        zIndex: 20,
-        paddingTop: 10,
-        fontFamily: Platform.OS === 'ios' ? 'Snell Roundhand' : (Platform.OS === 'web' ? 'cursive, serif' : 'serif')
+        zIndex: 50,
+        backgroundColor: 'transparent',
+        fontFamily: Platform.OS === 'web' ? 'Georgia, serif' : (Platform.OS === 'ios' ? 'Snell Roundhand' : 'serif'),
     },
     floatingTool: {
         position: 'absolute',
