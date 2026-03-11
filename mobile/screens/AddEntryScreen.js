@@ -130,7 +130,7 @@ export default function AddEntryScreen({ navigation, route }) {
 
     const updateStickerPos = (id, x, y) => {
         setActiveStickers(prev =>
-            prev.map(s => s.id === id ? { ...s, x, y } : s)
+            (prev || []).map(s => s.id === id ? { ...s, x, y } : s)
         );
     };
 
@@ -189,7 +189,7 @@ export default function AddEntryScreen({ navigation, route }) {
                     </View>
 
                     <View style={[styles.stickerLayer, { pointerEvents: 'box-none' }]}>
-                        {activeStickers.map((s) => (
+                        {(activeStickers || []).map((s) => (
                             <DraggableSticker
                                 key={s.id}
                                 s={s}
@@ -236,7 +236,7 @@ export default function AddEntryScreen({ navigation, route }) {
 
                             <Text style={styles.label}>Stickers (Tap to add)</Text>
                             <View style={styles.row}>
-                                {STICKERS_LIST.map(s => (
+                                {(STICKERS_LIST || []).map(s => (
                                     <TouchableOpacity key={s.id} style={styles.stickerBtn} onPress={() => addSticker(s)}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{s.emoji}</Text>
                                     </TouchableOpacity>

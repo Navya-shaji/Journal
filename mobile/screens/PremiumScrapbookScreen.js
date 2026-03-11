@@ -444,17 +444,17 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
     };
 
     const updateElement = (id, x, y, content) => {
-        setPages(prev => prev.map((pg, i) => i !== currentPage ? pg : {
+        setPages(prev => (prev || []).map((pg, i) => i !== currentPage ? pg : {
             ...pg,
-            elements: pg.elements.map(el =>
+            elements: (pg.elements || []).map(el =>
                 el.id === id ? { ...el, x, y: y ?? el.y, content: content !== undefined ? content : el.content } : el
             )
         }));
     };
 
     const saveText = (id, content) => {
-        setPages(prev => prev.map((pg, i) => i !== currentPage ? pg : {
-            ...pg, elements: pg.elements.map(el => el.id === id ? { ...el, content } : el)
+        setPages(prev => (prev || []).map((pg, i) => i !== currentPage ? pg : {
+            ...pg, elements: (pg.elements || []).map(el => el.id === id ? { ...el, content } : el)
         }));
     };
 
