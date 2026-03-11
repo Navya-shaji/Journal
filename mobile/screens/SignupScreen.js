@@ -28,9 +28,7 @@ export default function SignupScreen({ navigation }) {
         setLoading(true);
         try {
             await register(username, email, password);
-            Alert.alert('Welcome!', 'Your journal is ready. Please login.', [
-                { text: 'Let\'s Go', onPress: () => navigation.navigate('Login') }
-            ]);
+            navigation.navigate('Login', { email: email, registered: true });
         } catch (error) {
             Alert.alert('Oops!', error.error || 'Something went wrong');
         } finally {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     Text,
@@ -13,10 +13,20 @@ import {
 import { login } from '../services/authService';
 import { theme } from '../constants/Theme';
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen({ navigation, route }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [regSuccess, setRegSuccess] = useState(false);
+
+    useEffect(() => {
+        if (route.params?.email) {
+            setEmail(route.params.email);
+            if (route.params?.registered) {
+                setRegSuccess(true);
+            }
+        }
+    }, [route.params]);
 
     const handleLogin = async () => {
         if (!email || !password) {
@@ -46,6 +56,12 @@ export default function LoginScreen({ navigation }) {
             <View style={styles.content}>
                 <Text style={styles.title}>Welcome{"\n"}Back</Text>
                 <Text style={styles.subtitle}>Sign in to continue your journey</Text>
+
+                {regSuccess && (
+                    <View style={styles.successBox}>
+                        <Text style={styles.successText}>Registration successful! Please sign in.</Text>
+                    </View>
+                )}
 
                 <View style={styles.inputCard}>
                     <View style={styles.inputContainer}>
@@ -139,6 +155,20 @@ const styles = StyleSheet.create({
             web: { boxShadow: '0px 10px 20px rgba(196, 169, 177, 0.15)' },
             default: { shadowColor: '#C4A9B1', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.15, shadowRadius: 20 }
         })
+    },
+    successBox: {
+        backgroundColor: '#E8F5E9',
+        padding: 12,
+        borderRadius: 8,
+        marginBottom: 20,
+        borderWidth: 1,
+        borderColor: '#C8E6C9',
+    },
+    successText: {
+        color: '#2E7D32',
+        fontSize: 14,
+        fontWeight: '600',
+        textAlign: 'center',
     },
     inputContainer: {
         marginBottom: 20,
