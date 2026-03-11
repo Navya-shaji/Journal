@@ -9,7 +9,6 @@ import SignupScreen from '../screens/SignupScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import AddEntryScreen from '../screens/AddEntryScreen';
 import PinLockScreen from '../screens/PinLockScreen';
-import PremiumScrapbookScreen from '../screens/PremiumScrapbookScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 
 const Stack = createNativeStackNavigator();
@@ -57,14 +56,6 @@ export default function AppNavigator() {
                 />
                 <Stack.Screen name="Dashboard" component={DashboardScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="AddEntry" component={AddEntryScreen} options={{ headerShown: false }} />
-                <Stack.Screen
-                    name="PremiumScrapbook"
-                    component={PremiumScrapbookScreen}
-                    options={{
-                        headerShown: false,
-                        gestureEnabled: true
-                    }}
-                />
                 <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>

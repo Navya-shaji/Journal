@@ -112,12 +112,6 @@ export default function DashboardScreen({ navigation, route }) {
     useEffect(() => {
         let result = entries;
 
-        if (activeFilter === 'Journals') {
-            result = result.filter(entry => entry.styling?.theme !== 'Premium Scrapbook');
-        } else if (activeFilter === 'Scrapbooks') {
-            result = result.filter(entry => entry.styling?.theme === 'Premium Scrapbook');
-        }
-
         if (searchQuery.trim() !== '') {
             result = result.filter(entry =>
                 entry.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -126,7 +120,7 @@ export default function DashboardScreen({ navigation, route }) {
         }
 
         setFilteredEntries(result);
-    }, [searchQuery, entries, activeFilter]);
+    }, [searchQuery, entries]);
 
     const onRefresh = () => {
         setRefreshing(true);
@@ -194,12 +188,8 @@ export default function DashboardScreen({ navigation, route }) {
             <TouchableOpacity
                 style={styles.entryCard}
                 onPress={() => {
-                    if (item.styling?.theme === 'Premium Scrapbook') {
-                        navigation.navigate('PremiumScrapbook', { entryId: item._id });
-                    } else {
                         setViewItem(item);
                         setIsViewModalVisible(true);
-                    }
                 }}
             >
                 <View style={styles.entryHeader}>
@@ -213,18 +203,14 @@ export default function DashboardScreen({ navigation, route }) {
                         <Text style={styles.moodLabel}>{item.mood}</Text>
                     </View>
                 </View>
-                <Text style={styles.scrapbookTag}>
-                    {item.styling?.theme === 'Premium Scrapbook' ? 'Artistic Scrapbook Entry' : 'Journal Entry'}
-                </Text>
+                <Text style={styles.scrapbookTag}>Journal Entry</Text>
                 <Text style={[styles.entryPreview, { fontStyle: 'italic', color: '#BCAAA4', fontSize: 13, marginTop: 4 }]}>
                     Tap to unlock this memory...
                 </Text>
                 <View style={styles.cardActions}>
                     <TouchableOpacity
                         style={styles.editBtn}
-                        onPress={() => item.styling?.theme === 'Premium Scrapbook'
-                            ? navigation.navigate('PremiumScrapbook', { entryId: item._id })
-                            : openEditModal(item)}
+                        onPress={() => openEditModal(item)}
                     >
                         <Text style={styles.editBtnText}>Edit</Text>
                     </TouchableOpacity>
@@ -245,12 +231,6 @@ export default function DashboardScreen({ navigation, route }) {
                     <View style={styles.headerTop}>
                         <Text style={styles.greeting}>Hello, {username}</Text>
                         <View style={styles.headerActions}>
-                            <TouchableOpacity
-                                style={[styles.actionIcon, { backgroundColor: '#FFF0F5', marginRight: 10 }]}
-                                onPress={() => navigation.navigate('PremiumScrapbook', { userId })}
-                            >
-                                <Text style={{ fontSize: 18 }}>Studio</Text>
-                            </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.actionIcon}
                                 onPress={() => navigation.navigate('Profile')}
@@ -277,33 +257,6 @@ export default function DashboardScreen({ navigation, route }) {
                     />
                 </View>
 
-                <View style={styles.filterContainer}>
-                    {['All', 'Journals', 'Scrapbooks'].map((cat) => {
-                        const count = cat === 'All'
-                            ? entries.length
-                            : (cat === 'Journals'
-                                ? entries.filter(e => e.styling?.theme !== 'Premium Scrapbook').length
-                                : entries.filter(e => e.styling?.theme === 'Premium Scrapbook').length);
-
-                        return (
-                            <TouchableOpacity
-                                key={cat}
-                                style={[
-                                    styles.filterChip,
-                                    activeFilter === cat && styles.filterChipActive
-                                ]}
-                                onPress={() => setActiveFilter(cat)}
-                            >
-                                <Text style={[
-                                    styles.filterText,
-                                    activeFilter === cat && styles.filterTextActive
-                                ]}>
-                                    {cat} ({count})
-                                </Text>
-                            </TouchableOpacity>
-                        );
-                    })}
-                </View>
 
                 {loading ? (
                     <View style={styles.loader}>
@@ -389,49 +342,6 @@ export default function DashboardScreen({ navigation, route }) {
                     </View>
                 </Modal>
 
-                <Modal
-                    visible={isSelectionModalVisible}
-                    animationType="slide"
-                    transparent={true}
-                    onRequestClose={() => setIsSelectionModalVisible(false)}
-                >
-                    <View style={styles.modalOverlay}>
-                        <View style={[styles.modalContent, { padding: 30 }]}>
-                            <Text style={[styles.modalTitle, { textAlign: 'center', marginBottom: 25 }]}>
-                                What would you like to create?
-                            </Text>
-
-                            <TouchableOpacity
-                                style={[styles.selectionBtn, { backgroundColor: '#FDFCF0', borderColor: '#E8DCC8' }]}
-                                onPress={() => {
-                                    setIsSelectionModalVisible(false);
-                                    navigation.navigate('AddEntry', { userId });
-                                }}
-                            >
-                                <Text style={styles.selectionBtnTitle}>Classic Journal</Text>
-                                <Text style={styles.selectionBtnSub}>Write your thoughts on paper</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                style={[styles.selectionBtn, { backgroundColor: '#FFF9FB', borderColor: '#F0E0E5', marginTop: 15 }]}
-                                onPress={() => {
-                                    setIsSelectionModalVisible(false);
-                                    navigation.navigate('PremiumScrapbook', { userId });
-                                }}
-                            >
-                                <Text style={[styles.selectionBtnTitle, { color: '#D88A9F' }]}>Artistic Scrapbook</Text>
-                                <Text style={styles.selectionBtnSub}>Stickers, quotes, and memories</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                style={{ marginTop: 25, alignSelf: 'center' }}
-                                onPress={() => setIsSelectionModalVisible(false)}
-                            >
-                                <Text style={{ color: '#BCAAA4', fontWeight: '700' }}>Maybe later</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </Modal>
 
                 <Modal
                     visible={isEditModalVisible}
@@ -491,7 +401,7 @@ export default function DashboardScreen({ navigation, route }) {
 
             <TouchableOpacity
                 style={styles.fab}
-                onPress={() => setIsSelectionModalVisible(true)}
+                onPress={() => navigation.navigate('AddEntry', { userId })}
             >
                 <Text style={styles.fabText}>+</Text>
             </TouchableOpacity>
