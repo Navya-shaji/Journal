@@ -112,7 +112,7 @@ const TextEditModal = ({ visible, item, onSave, onClose }) => {
 
 
 const QuotePickerModal = ({ visible, onSelect, onClose }) => {
-    const [activeTab, setActiveTab] = useState('💫 Inspire');
+    const [activeTab, setActiveTab] = useState('Inspire');
     return (
         <Modal visible={visible} animationType="slide" transparent>
             <View style={styles.modalBackdrop}>
@@ -123,14 +123,14 @@ const QuotePickerModal = ({ visible, onSelect, onClose }) => {
                         <View style={{ width: 60 }} />
                     </View>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.catTabsRow}>
-                        {Object.keys(QUOTE_CATEGORIES).map(cat => (
+                        {Object.keys(QUOTE_CATEGORIES || {}).map(cat => (
                             <TouchableOpacity key={cat} style={[styles.catTab, activeTab === cat && styles.catTabActive]} onPress={() => setActiveTab(cat)}>
-                                <Text style={[styles.catTabText, activeTab === cat && styles.catTabTextActive]}>{cat}</Text>
+                                <Text style={[styles.catTabText, activeTab === cat && styles.catTabTextActive]}>{cat === 'Inspire' ? '💫 ' + cat : (cat === 'Soft' ? '🌸 ' + cat : (cat === 'Journal' ? '📖 ' + cat : '🔥 ' + cat))}</Text>
                             </TouchableOpacity>
                         ))}
                     </ScrollView>
                     <ScrollView contentContainerStyle={styles.quoteList}>
-                        {QUOTE_CATEGORIES[activeTab].map((q, i) => (
+                        {(QUOTE_CATEGORIES[activeTab] || []).map((q, i) => (
                             <TouchableOpacity key={i} style={styles.quoteItem} onPress={() => { onSelect(q); onClose(); }}>
                                 <Text style={styles.quoteText}>"{q}"</Text>
                             </TouchableOpacity>
@@ -330,7 +330,7 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
     const [showQuotes, setShowQuotes] = useState(false);
     const [showShapePicker, setShowShapePicker] = useState(false);
     const [showPageGrid, setShowPageGrid] = useState(false);
-    const [activeLibTab, setActiveLibTab] = useState('⭐ Faves');
+    const [activeLibTab, setActiveLibTab] = useState('Faves');
     const [confirmConfig, setConfirmConfig] = useState({ visible: false, title: '', message: '', onConfirm: () => { }, isDestructive: false });
 
     const livePathRef = useRef('');
@@ -934,7 +934,7 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                                 ))}
                             </ScrollView>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.stickerGrid}>
-                                {STICKER_CATEGORIES[activeLibTab].map((s, idx) => (
+                                {(STICKER_CATEGORIES[activeLibTab] || []).map((s, idx) => (
                                     <TouchableOpacity key={idx} style={styles.libStickerBtn}
                                         onPress={() => { addSticker(s); setShowLibrary(false); }}>
                                         <Text style={styles.libSticker}>{s}</Text>
