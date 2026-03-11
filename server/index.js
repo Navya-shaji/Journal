@@ -28,13 +28,20 @@ app.get('/api/ping', (req, res) => {
 const mongoURI = process.env.MONGODB_URI || process.env.MONGO_URL;
 
 let lastDbError = null;
+
 if (mongoURI) {
     mongoose.connect(mongoURI, {
         serverSelectionTimeoutMS: 5000,
         connectTimeoutMS: 10000,
-    })
-    .catch(err => {
-        lastDbError = err.message;
+    }).catch(err => {
+        lastDbError = `Initial connection error: ${err.message}`;
+    });
+
+    mongoose.connection.on('error', err => {
+        lastDbError = `Runtime connection error: ${err.message}`;
+    });
+
+    mongoose.connection.on('disconnected', () => {
     });
 }
 
