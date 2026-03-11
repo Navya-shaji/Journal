@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_URL = `https://journal-w9ls.onrender.com/api/entries`;
+const API_URL = `${process.env.EXPO_PUBLIC_API_URL}/entries`;
 
 const getAuthHeader = async () => {
     const token = await AsyncStorage.getItem('userToken');
