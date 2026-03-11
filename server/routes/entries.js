@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const Entry = require('../models/Entry');
 const router = express.Router();
@@ -17,6 +18,9 @@ const auth = (req, res, next) => {
 
 router.post('/', auth, async (req, res) => {
     try {
+        if (mongoose.connection.readyState !== 1) {
+            return res.status(503).json({ error: 'Database is not connected' });
+        }
         const { content, mood, tags, styling } = req.body;
         const entry = new Entry({
             user: req.user.userId,

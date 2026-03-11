@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
@@ -18,9 +19,22 @@ const auth = (req, res, next) => {
 router.post('/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
+        
         if (!username || !email || !password) {
-            return res.status(400).json({ error: 'All fields are required' });
+            return res.status(400).json({ 
+                error: 'All fields are required', 
+                fields: { 
+                    username: !!username, 
+                    email: !!email, 
+                    password: !!password 
+                } 
+            });
         }
+
+        if (mongoose.connection.readyState !== 1) {
+            return res.status(503).json({ error: 'Database is not connected' });
+        }
+
         const userExists = await User.findOne({ $or: [{ email }, { username }] });
         if (userExists) return res.status(400).json({ error: 'User already exists' });
 
