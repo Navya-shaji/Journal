@@ -219,8 +219,8 @@ const ScrapbookElement = ({ item, isSelected, onSelect, onUpdate, isViewMode, cu
     useEffect(() => {
         if (!isViewMode && item.type === 'sticker') {
             Animated.loop(Animated.sequence([
-                Animated.timing(floatAnim, { toValue: -3, duration: 2000, useNativeDriver: true }),
-                Animated.timing(floatAnim, { toValue: 0, duration: 2000, useNativeDriver: true }),
+                Animated.timing(floatAnim, { toValue: -3, duration: 2000, useNativeDriver: Platform.OS !== 'web' }),
+                Animated.timing(floatAnim, { toValue: 0, duration: 2000, useNativeDriver: Platform.OS !== 'web' }),
             ])).start();
         }
     }, [isViewMode]);
@@ -307,8 +307,7 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
             const userData = await AsyncStorage.getItem('userData');
             if (userData) {
                 const user = JSON.parse(userData);
-                // Fix: use userId which matches authService.js
-                // Removed log
+                setUserId(user.userId);
             }
         };
         getUserId();
@@ -835,7 +834,11 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                 </TouchableOpacity>
             )}
 
-            <Wrapper ref={viewShotRef} options={{ format: 'jpg', quality: 0.95 }} style={{ flex: 1 }}>
+            <Wrapper
+                ref={viewShotRef}
+                options={Platform.OS !== 'web' ? { format: 'jpg', quality: 0.95 } : undefined}
+                style={{ flex: 1 }}
+            >
                 <Animated.View style={[styles.canvas, { transform: [{ translateX: pageTranslateX }] }]}>
                     <View style={styles.rulingContainer} pointerEvents="none">
                         {Array(24).fill(0).map((_, i) => <View key={i} style={styles.ruledLine} />)}
