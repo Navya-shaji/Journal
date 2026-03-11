@@ -27,12 +27,14 @@ app.get('/api/ping', (req, res) => {
 
 const mongoURI = process.env.MONGODB_URI || process.env.MONGO_URL;
 
+let lastDbError = null;
 if (mongoURI) {
     mongoose.connect(mongoURI, {
         serverSelectionTimeoutMS: 5000,
         connectTimeoutMS: 10000,
     })
     .catch(err => {
+        lastDbError = err.message;
     });
 }
 
@@ -43,8 +45,9 @@ app.get('/health', (req, res) => {
 app.get('/api/status', (req, res) => {
     res.json({
         status: 'ok',
-        database: mongoose.connection.readyState === 1 ? 'connected' : 'connecting/disconnected',
+        database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
         readyState: mongoose.connection.readyState,
+        error: lastDbError,
         env: {
             hasMongoUri: !!(process.env.MONGODB_URI || process.env.MONGO_URL),
         }
