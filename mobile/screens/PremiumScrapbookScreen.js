@@ -742,14 +742,14 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                             </TouchableOpacity>
                         </View>
                         <ScrollView contentContainerStyle={styles.pageGridEntries}>
-                            {pages.map((pg, idx) => (
-                                <View key={pg.id} style={styles.pageThumbContainer}>
+                            {(pages || []).map((pg, idx) => (
+                                <View key={pg?.id || idx} style={styles.pageThumbContainer}>
                                     <TouchableOpacity
                                         style={[styles.pageThumb, currentPage === idx && styles.activePageThumb]}
                                         onPress={() => { setCurrentPage(idx); setShowPageGrid(false); }}
                                     >
                                         <Text style={styles.pageThumbDetail}>Page {idx + 1}</Text>
-                                        <Text style={styles.pageThumbElements}>{pg.elements.length} items</Text>
+                                        <Text style={styles.pageThumbElements}>{(pg?.elements || []).length} items</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={styles.deletePgThumb}
@@ -846,7 +846,7 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                     <View style={styles.margin} pointerEvents="none" />
 
                     <View style={StyleSheet.absoluteFill} pointerEvents={currentTool === 'doodle' ? 'none' : 'box-none'}>
-                        {pages[currentPage] && pages[currentPage].elements.map(el => (
+                        {(pages[currentPage]?.elements || []).map(el => (
                             <ScrapbookElement
                                 key={el.id} item={el}
                                 isSelected={selectedId === el.id}
@@ -857,7 +857,7 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                     </View>
 
                     <Svg style={StyleSheet.absoluteFill} pointerEvents="none">
-                        {pages[currentPage] && pages[currentPage].paths.map((p, i) => (
+                        {(pages[currentPage]?.paths || []).map((p, i) => (
                             <Path key={i} d={p.d} stroke={p.color} strokeWidth={p.size} fill="none" strokeLinecap="round" strokeLinejoin="round" />
                         ))}
                         {livePath && (
