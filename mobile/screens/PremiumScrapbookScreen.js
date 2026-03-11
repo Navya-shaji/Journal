@@ -69,7 +69,7 @@ const TextShapePickerModal = ({ visible, onSelect, onClose }) => (
             <View style={styles.shapePickerModal}>
                 <Text style={styles.shapePickerTitle}>Choose Text Style</Text>
                 <ScrollView contentContainerStyle={styles.shapeGrid}>
-                    {TEXT_SHAPES.map(shape => (
+                    {(TEXT_SHAPES || []).map(shape => (
                         <TouchableOpacity
                             key={shape.id}
                             style={styles.shapeOption}
@@ -364,8 +364,8 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                     if (entry && entry.styling?.theme === 'Premium Scrapbook') {
                         setPages([{
                             id: 'page1',
-                            elements: entry.styling.elements || [],
-                            paths: entry.styling.paths || []
+                            elements: entry.styling?.elements || [],
+                            paths: entry.styling?.paths || []
                         }]);
                     }
                 } finally {
@@ -906,12 +906,12 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                     {currentTool === 'doodle' && (
                         <View style={styles.brushPanel}>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.brushRow}>
-                                {BRUSH_COLORS.map(c => (
+                                {(BRUSH_COLORS || []).map(c => (
                                     <TouchableOpacity key={c} onPress={() => setBrushColor(c)}
                                         style={[styles.colorDot, { backgroundColor: c, transform: [{ scale: c === brushColor ? 1.35 : 1 }], borderWidth: c === brushColor ? 2.5 : 1 }]} />
                                 ))}
                                 <View style={styles.brushDivider} />
-                                {BRUSH_SIZES.map(sz => (
+                                {(BRUSH_SIZES || []).map(sz => (
                                     <TouchableOpacity key={sz} style={[styles.sizeBtn, brushSize === sz && styles.sizeBtnActive]} onPress={() => setBrushSize(sz)}>
                                         <View style={{ width: sz * 2.5, height: sz * 2.5, borderRadius: sz * 2.5, backgroundColor: brushColor }} />
                                     </TouchableOpacity>
@@ -927,7 +927,7 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                     {showLibrary && (
                         <View style={styles.libraryPanel}>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.catTabsRow}>
-                                {Object.keys(STICKER_CATEGORIES).map(cat => (
+                                {Object.keys(STICKER_CATEGORIES || {}).map(cat => (
                                     <TouchableOpacity key={cat} style={[styles.catTab, activeLibTab === cat && styles.catTabActive]} onPress={() => setActiveLibTab(cat)}>
                                         <Text style={[styles.catTabText, activeLibTab === cat && styles.catTabTextActive]}>{cat}</Text>
                                     </TouchableOpacity>
