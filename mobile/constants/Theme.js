@@ -13,7 +13,6 @@ export const theme = {
         moodHappy: '#FFD1DC',
         moodNeutral: '#E2D1F9',
         moodSad: '#D8F3DC',
-        // Vintage/Scrapbook Theme
         vintageBg: '#5D4037',
         vintagePaper: '#FDF5E6',
         vintageRibbon: '#795548',

@@ -25,11 +25,11 @@ const PAGE_THEMES = [
 ];
 
 const STICKERS_LIST = [
-    { id: 'heart', emoji: '❤️' },
-    { id: 'star', emoji: '⭐' },
-    { id: 'sparkle', emoji: '✨' },
-    { id: 'flower', emoji: '🌸' },
-    { id: 'bear', emoji: '🧸' },
+    { id: 'heart', emoji: 'Heart' },
+    { id: 'star', emoji: 'Star' },
+    { id: 'sparkle', emoji: 'Sparkle' },
+    { id: 'flower', emoji: 'Flower' },
+    { id: 'bear', emoji: 'Bear' },
 ];
 
 const DraggableSticker = ({ s, onUpdate }) => {
@@ -50,7 +50,6 @@ const DraggableSticker = ({ s, onUpdate }) => {
             ),
             onPanResponderRelease: () => {
                 pan.flattenOffset();
-                // Notify parent of new position
                 onUpdate(s.id, pan.x._value, pan.y._value);
             }
         })
@@ -65,7 +64,7 @@ const DraggableSticker = ({ s, onUpdate }) => {
             }}
             {...panResponder.panHandlers}
         >
-            <Text style={{ fontSize: 40 }}>{s.emoji}</Text>
+            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{s.emoji}</Text>
         </Animated.View>
     );
 };
@@ -97,7 +96,6 @@ export default function AddEntryScreen({ navigation, route }) {
             }
         }
 
-        console.log('📡 Saving Journal Entry for user:', currentUid);
         setLoading(true);
         try {
             await createEntry({
@@ -109,12 +107,10 @@ export default function AddEntryScreen({ navigation, route }) {
                     stickers: activeStickers
                 }
             });
-            console.log('✅ Journal saved successfully');
-            Alert.alert('Saved', 'Your memory has been bound into your book. 📖', [
+            Alert.alert('Saved', 'Your memory has been bound into your book.', [
                 { text: 'OK', onPress: () => navigation.navigate('Dashboard') }
             ]);
         } catch (error) {
-            console.error('❌ Save error:', error);
             Alert.alert('Error', `Failed to save: ${error.error || 'Check connection'}`);
         } finally {
             setLoading(false);
@@ -141,7 +137,7 @@ export default function AddEntryScreen({ navigation, route }) {
     const clearForm = () => {
         Alert.alert(
             "Clear Page?",
-            "This will remove all text and stickers you've added. Start fresh? ✨",
+            "This will remove all text and stickers you've added. Start fresh?",
             [
                 { text: "Continue Writing", style: "cancel" },
                 {
@@ -192,7 +188,6 @@ export default function AddEntryScreen({ navigation, route }) {
                         ))}
                     </View>
 
-                    {/* Draggable Layer */}
                     <View style={[styles.stickerLayer, { pointerEvents: 'box-none' }]}>
                         {activeStickers.map((s) => (
                             <DraggableSticker
@@ -218,7 +213,7 @@ export default function AddEntryScreen({ navigation, route }) {
                     style={styles.floatingTool}
                     onPress={() => setShowCustomizer(true)}
                 >
-                    <Text style={{ fontSize: 28 }}>🎨</Text>
+                    <Text style={{ fontSize: 18, color: '#5D4037', fontWeight: 'bold' }}>Style</Text>
                 </TouchableOpacity>
 
                 <Modal visible={showCustomizer} animationType="slide" transparent={true}>
@@ -239,11 +234,11 @@ export default function AddEntryScreen({ navigation, route }) {
                                 ))}
                             </View>
 
-                            <Text style={styles.label}>Stickers (Tap to add, drag on page)</Text>
+                            <Text style={styles.label}>Stickers (Tap to add)</Text>
                             <View style={styles.row}>
                                 {STICKERS_LIST.map(s => (
                                     <TouchableOpacity key={s.id} style={styles.stickerBtn} onPress={() => addSticker(s)}>
-                                        <Text style={{ fontSize: 30 }}>{s.emoji}</Text>
+                                        <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{s.emoji}</Text>
                                     </TouchableOpacity>
                                 ))}
                             </View>

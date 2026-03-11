@@ -2,7 +2,6 @@ import axios from 'axios';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Live Production URL from Render
 const API_URL = `https://journal-w9ls.onrender.com/api/auth`;
 
 export const login = async (email, password) => {
@@ -10,7 +9,6 @@ export const login = async (email, password) => {
         const response = await axios.post(`${API_URL}/login`, { email, password });
         const { token, username, userId } = response.data;
 
-        // Save Session
         await AsyncStorage.setItem('userToken', token);
         await AsyncStorage.setItem('userData', JSON.stringify({ username, userId }));
 
@@ -22,7 +20,6 @@ export const login = async (email, password) => {
 
 export const register = async (username, email, password) => {
     try {
-        // Basic Frontend Validation
         if (!email.includes('@')) throw { error: 'Invalid email format' };
         if (password.length < 6) throw { error: 'Password must be at least 6 characters' };
 

@@ -23,46 +23,46 @@ const IS_IOS = Platform.OS === 'ios';
 const BRUSH_COLORS = ['#6D4C41', '#C62828', '#1565C0', '#2E7D32', '#F57F17', '#6A1B9A', '#000', '#E91E8C'];
 const BRUSH_SIZES = [2, 4, 8, 14];
 
-// ─── Text Shapes ─────────────────────────────────────────────────────────────
+
 const TEXT_SHAPES = [
-    { id: 'card', label: '📋 Card', style: { backgroundColor: '#FDF5E6', borderRadius: 5, padding: 14, width: 200 } },
-    { id: 'sticky', label: '📌 Sticky', style: { backgroundColor: '#FFF9C4', borderRadius: 3, padding: 14, width: 180, borderBottomWidth: 4, borderBottomColor: '#F9A825' } },
-    { id: 'ribbon', label: '🎀 Ribbon', style: { backgroundColor: '#F8BBD0', borderRadius: 30, paddingHorizontal: 20, paddingVertical: 10, alignItems: 'center' } },
-    { id: 'badge', label: '🏷️ Badge', style: { backgroundColor: '#E8F5E9', borderRadius: 50, padding: 16, width: 140, height: 140, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#A5D6A7' } },
-    { id: 'torn', label: '📄 Torn', style: { backgroundColor: '#FFFDE7', padding: 14, width: 200, borderTopWidth: 1, borderTopColor: '#F0E070', borderStyle: 'dashed' } },
-    { id: 'minimal', label: '✏️ Plain', style: { padding: 10, width: 200, borderBottomWidth: 2, borderBottomColor: '#8D6E63' } },
-    { id: 'frame', label: '🖼️ Frame', style: { backgroundColor: '#fff', padding: 14, width: 200, borderWidth: 3, borderColor: '#8D6E63' } },
-    { id: 'cloud', label: '☁️ Cloud', style: { backgroundColor: '#E3F2FD', borderRadius: 40, padding: 18, width: 200, alignItems: 'center' } },
+    { id: 'card', label: 'Card', style: { backgroundColor: '#FDF5E6', borderRadius: 5, padding: 14, width: 200 } },
+    { id: 'sticky', label: 'Sticky', style: { backgroundColor: '#FFF9C4', borderRadius: 3, padding: 14, width: 180, borderBottomWidth: 4, borderBottomColor: '#F9A825' } },
+    { id: 'ribbon', label: 'Ribbon', style: { backgroundColor: '#F8BBD0', borderRadius: 30, paddingHorizontal: 20, paddingVertical: 10, alignItems: 'center' } },
+    { id: 'badge', label: 'Badge', style: { backgroundColor: '#E8F5E9', borderRadius: 50, padding: 16, width: 140, height: 140, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#A5D6A7' } },
+    { id: 'torn', label: 'Torn', style: { backgroundColor: '#FFFDE7', padding: 14, width: 200, borderTopWidth: 1, borderTopColor: '#F0E070', borderStyle: 'dashed' } },
+    { id: 'minimal', label: 'Plain', style: { padding: 10, width: 200, borderBottomWidth: 2, borderBottomColor: '#8D6E63' } },
+    { id: 'frame', label: 'Frame', style: { backgroundColor: '#fff', padding: 14, width: 200, borderWidth: 3, borderColor: '#8D6E63' } },
+    { id: 'cloud', label: 'Cloud', style: { backgroundColor: '#E3F2FD', borderRadius: 40, padding: 18, width: 200, alignItems: 'center' } },
 ];
 
-// ─── Sticker Library ─────────────────────────────────────────────────────────
+
 const STICKER_CATEGORIES = {
-    '⭐ Faves': ['🌸', '🦋', '📖', '❤️', '☕', '🌿', '📷', '✨', '🎀', '🌷'],
-    '🌸 Flowers': ['🌸', '🌺', '🌻', '🌹', '🌷', '🌼', '💐', '🪷', '🌾', '🍀', '🪻', '🌱', '🌿', '🍃', '🪸', '🌳', '🌲', '🪴', '🌵', '🌴'],
-    '🦋 Insects': ['🦋', '🐝', '🐞', '🪲', '🐛', '🦟', '🪳', '🐌', '🦎', '🌸', '🌼', '🌺', '🌻', '🌹', '🪷'],
-    '📚 Vintage': ['📖', '📚', '📜', '🪶', '🖊️', '✒️', '🕰️', '🎩', '🧳', '🗝️', '🗃️', '📯', '🎗️', '🪞', '🕯️'],
-    '📷 Retro': ['📷', '📸', '🎥', '📽️', '📻', '📺', '☎️', '🗺️', '🧭', '🪄', '🎞️', '🔮', '🪬', '🏮', '🎑'],
-    '❤️ Lovely': ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '💗', '💖', '💝', '💌', '🫶', '💋', '🌹'],
-    '🐾 Animals': ['🐇', '🦊', '🐿️', '🦔', '🐦', '🕊️', '🦩', '🦚', '🐠', '🦋', '🐝', '🌸', '🌿', '🍃', '🪷'],
-    '✨ Magic': ['✨', '🌟', '💫', '⚡', '🔮', '🪄', '🌈', '☄️', '🌌', '💎', '🌙', '⭐', '🌠', '🫧', '🪐'],
-    '☕ Cafe': ['☕', '🍵', '🧋', '🫖', '🍰', '🧁', '🍩', '🍪', '🍫', '🍓', '🍒', '🫐', '🍋', '🌸', '🕯️'],
-    '🌤 Sky': ['☀️', '🌤️', '⛅', '☁️', '🌈', '🌙', '🌛', '⭐', '🌟', '💫', '⚡', '❄️', '☂️', '🌊', '🌠'],
-    '✈️ Travel': ['✈️', '🚲', '🚂', '⛵', '🏕️', '🏖️', '🏰', '🗼', '🌍', '🧭', '📷', '🎒', '🌅', '🌄', '🏔️'],
-    '🎵 Music': ['🎵', '🎶', '🎸', '🎹', '🎤', '🎧', '🎼', '🎺', '🎻', '🥁', '🎷', '🪗', '🪈', '🎙️', '🎚️'],
-    '🌙 Disney': ['🐭', '🐰', '🦁', '🐟', '🐙', '🤍', '⭐', '✨', '🏰', '🎡', '🌠', '💫', '🦋', '🌺', '🪄'],
-    '🌙 Cozy': ['🕯️', '🧸', '📖', '🍵', '🛋️', '🌙', '🧶', '🪴', '🐾', '🍂', '🏠', '🧣', '🫖', '🪞', '🌛'],
-    '🪷 Korean': ['🌸', '🎀', '☁️', '🍵', '🪄', '✨', '💌', '🌙', '🐰', '🍡', '🫧', '🪻', '🌷', '🎐', '🏮'],
+    'Faves': ['🌸', '🦋', '📖', '❤️', '☕', '🌿', '📷', '✨', '🎀', '🌷'],
+    'Flowers': ['🌸', '🌺', '🌻', '🌹', '🌷', '🌼', '💐', '🪷', '🌾', '🍀', '🪻', '🌱', '🌿', '🍃', '🪸', '🌳', '🌲', '🪴', '🌵', '🌴'],
+    'Insects': ['🦋', '🐝', '🐞', '🪲', '🐛', '🦟', '🪳', '🐌', '🦎', '🌸', '🌼', '🌺', '🌻', '🌹', '🪷'],
+    'Vintage': ['📖', '📚', '📜', '🪶', '🖊️', '✒️', '🕰️', '🎩', '🧳', '🗝️', '🗃️', '📯', '🎗️', '🪞', '🕯️'],
+    'Retro': ['📷', '📸', '🎥', '📽️', '📻', '📺', '☎️', '🗺️', '🧭', '🪄', '🎞️', '🔮', '🪬', '🏮', '🎑'],
+    'Lovely': ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '💗', '💖', '💝', '💌', '🫶', '💋', '🌹'],
+    'Animals': ['🐇', '🦊', '🐿️', '🦔', '🐦', '🕊️', '🦩', '🦚', '🐠', '🦋', '🐝', '🌸', '🌿', '🍃', '🪷'],
+    'Magic': ['✨', '🌟', '💫', '⚡', '🔮', '🪄', '🌈', '☄️', '🌌', '💎', '🌙', '⭐', '🌠', '🫧', '🪐'],
+    'Cafe': ['☕', '🍵', '🧋', '🫖', '🍰', '🧁', '🍩', '🍪', '🍫', '🍓', '🍒', '🫐', '🍋', '🌸', '🕯️'],
+    'Sky': ['☀️', '🌤️', '⛅', '☁️', '🌈', '🌙', '🌛', '⭐', '🌟', '💫', '⚡', '❄️', '☂️', '🌊', '🌠'],
+    'Travel': ['✈️', '🚲', '🚂', '⛵', '🏕️', '🏖️', '🏰', '🗼', '🌍', '🧭', '📷', '🎒', '🌅', '🌄', '🏔️'],
+    'Music': ['🎵', '🎶', '🎸', '🎹', '🎤', '🎧', '🎼', '🎺', '🎻', '🥁', '🎷', '🪗', '🪈', '🎙️', '🎚️'],
+    'Disney': ['🐭', '🐰', '🦁', '🐟', '🐙', '🤍', '⭐', '✨', '🏰', '🎡', '🌠', '💫', '🦋', '🌺', '🪄'],
+    'Cozy': ['🕯️', '🧸', '📖', '🍵', '🛋️', '🌙', '🧶', '🪴', '🐾', '🍂', '🏠', '🧣', '🫖', '🪞', '🌛'],
+    'Korean': ['🌸', '🎀', '☁️', '🍵', '🪄', '✨', '💌', '🌙', '🐰', '🍡', '🫧', '🪻', '🌷', '🎐', '🏮'],
 };
 
-// ─── Quotes Library ──────────────────────────────────────────────────────────
+
 const QUOTE_CATEGORIES = {
-    '💫 Inspire': ['Life is a beautiful ride.', 'Dream without fear.', 'Be the change you wish to see.', 'Every day is a second chance.', 'Choose happy.', 'Think less, live more.', 'Say yes to new adventures.', 'You are enough.', 'Grow through what you go through.', 'Good things take time.'],
-    '🌸 Soft': ['Be gentle with yourself.', 'Small steps every day.', 'Bloom where you are planted.', 'She believed she could, so she did.', 'You are made of magic.', 'Collect moments, not things.', 'Breathe. Trust. Let go.', 'Stay soft. It is beautiful.', 'Sunshine and flowers.', 'In the middle of difficulty lies opportunity.'],
-    '📖 Journal': ['Today I am grateful for…', 'I felt most alive when…', 'My favourite memory is…', 'Something that made me smile…', 'What I want to remember…', 'The best part of today…', 'I am proud of myself for…', 'A lesson I learned today…', 'Something I love about my life…', 'Goals for tomorrow…'],
-    '💪 Bold': ['No rain, no flowers.', 'Be a voice, not an echo.', 'Difficult roads lead to beautiful destinations.', 'You were born an original.', 'Do what they think you can\'t.', 'Never let go of your dreams.', 'Every moment is a fresh beginning.', 'Mistakes are proof you are trying.', 'Strive for progress, not perfection.', 'Go the extra mile — it\'s never crowded.'],
+    'Inspire': ['Life is a beautiful ride.', 'Dream without fear.', 'Be the change you wish to see.', 'Every day is a second chance.', 'Choose happy.', 'Think less, live more.', 'Say yes to new adventures.', 'You are enough.', 'Grow through what you go through.', 'Good things take time.'],
+    'Soft': ['Be gentle with yourself.', 'Small steps every day.', 'Bloom where you are planted.', 'She believed she could, so she did.', 'You are made of magic.', 'Collect moments, not things.', 'Breathe. Trust. Let go.', 'Stay soft. It is beautiful.', 'Sunshine and flowers.', 'In the middle of difficulty lies opportunity.'],
+    'Journal': ['Today I am grateful for…', 'I felt most alive when…', 'My favourite memory is…', 'Something that made me smile…', 'What I want to remember…', 'The best part of today…', 'I am proud of myself for…', 'A lesson I learned today…', 'Something I love about my life…', 'Goals for tomorrow…'],
+    'Bold': ['No rain, no flowers.', 'Be a voice, not an echo.', 'Difficult roads lead to beautiful destinations.', 'You were born an original.', 'Do what they think you can\'t.', 'Never let go of your dreams.', 'Every moment is a fresh beginning.', 'Mistakes are proof you are trying.', 'Strive for progress, not perfection.', 'Go the extra mile — it\'s never crowded.'],
 };
 
-// ─── Text Shape Picker Modal ──────────────────────────────────────────────────
+
 const TextShapePickerModal = ({ visible, onSelect, onClose }) => (
     <Modal visible={visible} animationType="slide" transparent>
         <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={onClose}>
@@ -87,7 +87,7 @@ const TextShapePickerModal = ({ visible, onSelect, onClose }) => (
     </Modal>
 );
 
-// ─── Text Edit Modal ──────────────────────────────────────────────────────────
+
 const TextEditModal = ({ visible, item, onSave, onClose }) => {
     const [draft, setDraft] = useState(item?.content || '');
     useEffect(() => { setDraft(item?.content || ''); }, [item]);
@@ -99,7 +99,7 @@ const TextEditModal = ({ visible, item, onSave, onClose }) => {
                         <TouchableOpacity onPress={onClose}><Text style={styles.modalCancel}>Cancel</Text></TouchableOpacity>
                         <Text style={styles.editModalTitle}>{item?.label || 'Text'}</Text>
                         <TouchableOpacity onPress={() => { onSave(item?.id, draft); onClose(); }}>
-                            <Text style={styles.modalDone}>Done ✓</Text>
+                            <Text style={styles.modalDone}>Done</Text>
                         </TouchableOpacity>
                     </View>
                     <TextInput style={styles.editModalInput} value={draft} onChangeText={setDraft}
@@ -110,7 +110,7 @@ const TextEditModal = ({ visible, item, onSave, onClose }) => {
     );
 };
 
-// ─── Quotes Modal ─────────────────────────────────────────────────────────────
+
 const QuotePickerModal = ({ visible, onSelect, onClose }) => {
     const [activeTab, setActiveTab] = useState('💫 Inspire');
     return (
@@ -119,7 +119,7 @@ const QuotePickerModal = ({ visible, onSelect, onClose }) => {
                 <View style={styles.quoteModal}>
                     <View style={styles.editModalHeader}>
                         <TouchableOpacity onPress={onClose}><Text style={styles.modalCancel}>Close</Text></TouchableOpacity>
-                        <Text style={styles.editModalTitle}>💬 Quotes</Text>
+                        <Text style={styles.editModalTitle}>Quotes</Text>
                         <View style={{ width: 60 }} />
                     </View>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.catTabsRow}>
@@ -142,7 +142,7 @@ const QuotePickerModal = ({ visible, onSelect, onClose }) => {
     );
 };
 
-// ─── Custom Premium Confirmation Popup ────────────────────────────────────────
+
 const ConfirmModal = ({ visible, title, message, onConfirm, onCancel, confirmText, cancelText, isDestructive }) => (
     <Modal visible={visible} transparent animationType="fade">
         <View style={styles.modalBackdrop}>
@@ -167,7 +167,7 @@ const ConfirmModal = ({ visible, title, message, onConfirm, onCancel, confirmTex
     </Modal>
 );
 
-// ─── Selection Action Bar ─────────────────────────────────────────────────────
+
 const SelectionBar = ({ visible, onDelete, onDuplicate, onRotate, onDeselect }) => {
     if (!visible) return null;
     return (
@@ -186,14 +186,13 @@ const SelectionBar = ({ visible, onDelete, onDuplicate, onRotate, onDeselect }) 
                 <Text style={styles.selActionText}>Copy</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.selAction, styles.selDelete]} onPress={onDelete}>
-                <Text style={styles.selActionEmoji}>🗑️</Text>
-                <Text style={[styles.selActionText, { color: '#C62828' }]}>Delete</Text>
+                <Text style={styles.selActionText}>Delete</Text>
             </TouchableOpacity>
         </View>
     );
 };
 
-// ─── Box Content Renderer (shape-aware) ──────────────────────────────────────
+
 const getBoxStyle = (shape) => {
     const s = TEXT_SHAPES.find(t => t.id === shape);
     return s ? s.style : TEXT_SHAPES[0].style;
@@ -208,7 +207,7 @@ const getTextStyle = (shape) => {
     return { fontSize: 17, color: '#3E2723', fontFamily: IS_IOS ? 'Palatino' : 'serif', lineHeight: 26 };
 };
 
-// ─── Draggable Element ────────────────────────────────────────────────────────
+
 const ScrapbookElement = ({ item, isSelected, onSelect, onUpdate, isViewMode, currentTool, onOpenEdit }) => {
     const pan = useRef(new Animated.ValueXY({ x: item.x, y: item.y })).current;
     const floatAnim = useRef(new Animated.Value(0)).current;
@@ -255,7 +254,7 @@ const ScrapbookElement = ({ item, isSelected, onSelect, onUpdate, isViewMode, cu
                 zIndex: item.type === 'tape' ? 50 : 2,
             }]}
         >
-            {/* Selection ring */}
+
             {isSelected && !isViewMode && !inDoodle && (
                 <View style={styles.selectedRing} pointerEvents="none" />
             )}
@@ -298,7 +297,7 @@ const ScrapbookElement = ({ item, isSelected, onSelect, onUpdate, isViewMode, cu
     );
 };
 
-// ─── Main Screen ──────────────────────────────────────────────────────────────
+
 export default function PremiumScrapbookScreen({ navigation, route }) {
     const [userId, setUserId] = useState(route.params?.userId || 'no-id');
 
@@ -309,8 +308,7 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
             if (userData) {
                 const user = JSON.parse(userData);
                 // Fix: use userId which matches authService.js
-                setUserId(user.userId || user.id || user._id);
-                console.log('✅ Session restored in Scrapbook:', user.userId);
+                // Removed log
             }
         };
         getUserId();
@@ -371,8 +369,6 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                             paths: entry.styling.paths || []
                         }]);
                     }
-                } catch (e) {
-                    console.error('Failed to load entry:', e);
                 } finally {
                     setSaveStatus('');
                 }
@@ -392,7 +388,7 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                             { id: '1', type: 'box', shape: 'card', label: 'Title', content: 'Dear Diary...', x: 40, y: 55, color: '#FDF5E6' },
                             { id: '2', type: 'sticker', content: '🌸', x: width * 0.65, y: 40, rotation: 12 },
                             { id: '3', type: 'sticker', content: '✨', x: width * 0.2, y: 300, rotation: -5 },
-                            { id: '4', type: 'box', shape: 'sticky', label: 'My Mood', content: 'Happy ✨', x: 40, y: height * 0.45 },
+                            { id: '4', type: 'box', shape: 'sticky', label: 'My Mood', content: 'Happy', x: 40, y: height * 0.45 },
                         ],
                         paths: []
                     }]);
@@ -544,8 +540,8 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
     const clearPage = () => {
         setConfirmConfig({
             visible: true,
-            title: "Clear Current Page? 🧹",
-            message: "This will remove all your stickers, notes, and drawings on this specific page. This action cannot be undone! ✨",
+            title: "Clear Current Page?",
+            message: "This will remove all your stickers, notes, and drawings on this specific page. This action cannot be undone!",
             confirmText: "Clear All",
             isDestructive: true,
             onConfirm: () => {
@@ -599,9 +595,9 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
     const startNewWork = () => {
         setConfirmConfig({
             visible: true,
-            title: "Start Next Work? 🎨",
+            title: "Start Next Work?",
             message: "Do you want to clear this entire scrapbook (all pages) and start a fresh masterpiece? Make sure you've saved to cloud first!",
-            confirmText: "Start Fresh ✨",
+            confirmText: "Start Fresh",
             isDestructive: false,
             onConfirm: () => {
                 setExistingId(null);
@@ -656,19 +652,17 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
             };
 
             if (existingId) {
-                console.log('✏️ Updating existing entry:', existingId);
                 await updateEntry(existingId, entryData);
             } else {
-                console.log('🆕 Creating new entry...');
                 const res = await createEntry(entryData);
                 if (res._id) setExistingId(res._id);
             }
 
-            console.log('✅ Save successful!');
+
 
             setConfirmConfig({
                 visible: true,
-                title: 'Saved ✨',
+                title: 'Saved',
                 message: 'Your memory is safe in the cloud!',
                 confirmText: 'Great!',
                 onConfirm: () => {
@@ -677,7 +671,6 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                 }
             });
         } catch (e) {
-            console.error('❌ Cloud save error:', e);
             const msg = e.response?.data?.error || e.message || 'Check your connection';
             setConfirmConfig({
                 visible: true,
@@ -830,7 +823,7 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                             <Text style={{ fontSize: 18 }}>📸</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.viewBtn} onPress={() => setIsViewMode(true)}>
-                            <Text style={styles.viewBtnText}>Preview ▶</Text>
+                            <Text style={styles.viewBtnText}>Preview</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -838,7 +831,7 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
 
             {isViewMode && (
                 <TouchableOpacity style={styles.exitViewBtn} onPress={() => setIsViewMode(false)}>
-                    <Text style={styles.exitViewText}>✎ Edit</Text>
+                    <Text style={styles.exitViewText}>Edit</Text>
                 </TouchableOpacity>
             )}
 
@@ -877,7 +870,7 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
 
             {!isViewMode && (
                 <View style={styles.bottomSection}>
-                    {/* Page nav */}
+
                     <View style={styles.pageNav}>
                         <TouchableOpacity onPress={() => handlePageChange(-1)} disabled={currentPage === 0}>
                             <Text style={[styles.navBtn, currentPage === 0 && styles.disabled]}>◀ Prev</Text>
@@ -897,7 +890,7 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                         </TouchableOpacity>
                     </View>
 
-                    {/* Selection bar */}
+
                     <SelectionBar
                         visible={!!selectedId && currentTool === 'move'}
                         onDeselect={() => setSelectedId(null)}
@@ -906,7 +899,7 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                         onRotate={rotateSelected}
                     />
 
-                    {/* Brush panel */}
+
                     {currentTool === 'doodle' && (
                         <View style={styles.brushPanel}>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.brushRow}>
@@ -921,13 +914,13 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                                     </TouchableOpacity>
                                 ))}
                                 <TouchableOpacity style={styles.undoBtn} onPress={undoStroke}>
-                                    <Text style={styles.undoBtnText}>↩ Undo</Text>
+                                    <Text style={styles.undoBtnText}>Undo</Text>
                                 </TouchableOpacity>
                             </ScrollView>
                         </View>
                     )}
 
-                    {/* Sticker library panel */}
+
                     {showLibrary && (
                         <View style={styles.libraryPanel}>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.catTabsRow}>
@@ -948,7 +941,7 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
                         </View>
                     )}
 
-                    {/* Toolbar */}
+
                     <View style={styles.footer}>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.toolBar}>
                             <TouchableOpacity style={[styles.tool, currentTool === 'move' && styles.toolActive]} onPress={() => { setCurrentTool('move'); setShowLibrary(false); }}>
@@ -987,7 +980,7 @@ export default function PremiumScrapbookScreen({ navigation, route }) {
     );
 }
 
-// ─── Styles ───────────────────────────────────────────────────────────────────
+
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#F5EDD1' },
     viewModeBg: { backgroundColor: '#1A0F08' },
@@ -1033,7 +1026,7 @@ const styles = StyleSheet.create({
         })
     },
 
-    // Popup Styles
+
     premiumPopup: {
         backgroundColor: '#fff',
         borderRadius: 24,
@@ -1100,7 +1093,7 @@ const styles = StyleSheet.create({
     quoteBoxText: { fontSize: 16, color: '#4E342E', fontFamily: IS_IOS ? 'Palatino' : 'serif', fontStyle: 'italic', lineHeight: 24 },
     placeholder: { color: '#BCAAA4', fontStyle: 'italic' },
 
-    // Shape Picker Modal
+
     shapePickerModal: { backgroundColor: '#FFFDF4', borderTopLeftRadius: 30, borderTopRightRadius: 30, padding: 20, maxHeight: height * 0.6 },
     shapePickerTitle: { fontSize: 18, fontWeight: '900', color: '#5D4037', textAlign: 'center', marginBottom: 16, fontStyle: 'italic' },
     shapeGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingBottom: 20 },
@@ -1109,7 +1102,7 @@ const styles = StyleSheet.create({
     shapePreviewText: { color: '#5D4037', fontFamily: IS_IOS ? 'Palatino' : 'serif', fontSize: 16 },
     shapeLabel: { marginTop: 6, fontSize: 12, fontWeight: '700', color: '#8D6E63' },
 
-    // Selection bar
+
     selectionBar: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#3E2723', marginHorizontal: 10, borderRadius: 20, paddingVertical: 8, paddingHorizontal: 12, marginBottom: 4 },
     selAction: { alignItems: 'center', paddingHorizontal: 12 },
     selDelete: { marginLeft: 'auto' },
@@ -1117,7 +1110,7 @@ const styles = StyleSheet.create({
     selActionText: { fontSize: 10, fontWeight: '700', color: '#FFCCBC', marginTop: 2 },
     selDivider: { width: 1, height: 30, backgroundColor: 'rgba(255,255,255,0.2)', marginHorizontal: 8 },
 
-    // Modals
+
     modalBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
     editModal: { backgroundColor: '#FFFDF4', borderTopLeftRadius: 30, borderTopRightRadius: 30, padding: 24, minHeight: 360 },
     quoteModal: { backgroundColor: '#FFFDF4', borderTopLeftRadius: 30, borderTopRightRadius: 30, padding: 20, height: height * 0.65 },

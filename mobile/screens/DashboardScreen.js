@@ -31,7 +31,7 @@ export default function DashboardScreen({ navigation, route }) {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [debugInfo, setDebugInfo] = useState('');
-    const [activeFilter, setActiveFilter] = useState('All'); // 'All', 'Journals', 'Scrapbooks'
+    const [activeFilter, setActiveFilter] = useState('All');
     const [confirmModal, setConfirmModal] = useState({ visible: false, id: null, title: '', message: '' });
 
     useEffect(() => {
@@ -57,11 +57,9 @@ export default function DashboardScreen({ navigation, route }) {
     const [editContent, setEditContent] = useState('');
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
-    // View Modal State
     const [viewItem, setViewItem] = useState(null);
     const [isViewModalVisible, setIsViewModalVisible] = useState(false);
 
-    // Entry Type Selection Modal State
     const [isSelectionModalVisible, setIsSelectionModalVisible] = useState(false);
 
     const fetchEntries = async (pageNum = 1, shouldRefresh = false) => {
@@ -78,7 +76,6 @@ export default function DashboardScreen({ navigation, route }) {
 
             if (shouldRefresh || pageNum === 1) {
                 setEntries(data.entries || []);
-                // Let the useEffect handle filteredEntries to avoid race conditions
             } else {
                 setEntries(prev => [...(prev || []), ...(data.entries || [])]);
             }
@@ -92,7 +89,6 @@ export default function DashboardScreen({ navigation, route }) {
             setHasMore(data.currentPage < data.totalPages);
             setPage(data.currentPage);
         } catch (error) {
-            console.error('Fetch Error:', error);
             setDebugInfo(`Error: ${error.message || 'Fetch failed'}`);
             if (pageNum === 1) {
                 Alert.alert('Connection Issue', 'Could not sync with cloud. Check your internet.');
@@ -107,7 +103,7 @@ export default function DashboardScreen({ navigation, route }) {
     useFocusEffect(
         useCallback(() => {
             if (userId !== 'no-id') {
-                setActiveFilter('All'); // Always show everything when returning/refreshing
+                setActiveFilter('All');
                 fetchEntries(1, true);
             }
         }, [userId])
@@ -116,14 +112,12 @@ export default function DashboardScreen({ navigation, route }) {
     useEffect(() => {
         let result = entries;
 
-        // Apply Type Filter
         if (activeFilter === 'Journals') {
             result = result.filter(entry => entry.styling?.theme !== 'Premium Scrapbook');
         } else if (activeFilter === 'Scrapbooks') {
             result = result.filter(entry => entry.styling?.theme === 'Premium Scrapbook');
         }
 
-        // Apply Search Filter
         if (searchQuery.trim() !== '') {
             result = result.filter(entry =>
                 entry.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -149,7 +143,7 @@ export default function DashboardScreen({ navigation, route }) {
         setConfirmModal({
             visible: true,
             id,
-            title: 'Delete Memory? 🗑️',
+            title: 'Delete Memory?',
             message: 'This will permanently remove this memory from your journal. Are you sure?'
         });
     };
@@ -162,7 +156,6 @@ export default function DashboardScreen({ navigation, route }) {
             setFilteredEntries(prev => prev.filter(e => e._id !== id));
             setConfirmModal({ visible: false, id: null, title: '', message: '' });
         } catch (e) {
-            console.error('❌ Delete error:', e);
             Alert.alert('Error', 'Could not delete entry');
             setConfirmModal({ visible: false, id: null, title: '', message: '' });
         }
@@ -181,7 +174,6 @@ export default function DashboardScreen({ navigation, route }) {
             setEditingId(null);
             setEditContent('');
         } catch (e) {
-            console.error('Update error', e);
             Alert.alert('Error', 'Could not update entry');
         }
     };
@@ -222,7 +214,7 @@ export default function DashboardScreen({ navigation, route }) {
                     </View>
                 </View>
                 <Text style={styles.scrapbookTag}>
-                    {item.styling?.theme === 'Premium Scrapbook' ? '✨ Artistic Scrapbook Entry' : '📝 Journal Entry'}
+                    {item.styling?.theme === 'Premium Scrapbook' ? 'Artistic Scrapbook Entry' : 'Journal Entry'}
                 </Text>
                 <Text style={[styles.entryPreview, { fontStyle: 'italic', color: '#BCAAA4', fontSize: 13, marginTop: 4 }]}>
                     Tap to unlock this memory...
@@ -234,10 +226,10 @@ export default function DashboardScreen({ navigation, route }) {
                             ? navigation.navigate('PremiumScrapbook', { entryId: item._id })
                             : openEditModal(item)}
                     >
-                        <Text style={styles.editBtnText}>✏️ Edit</Text>
+                        <Text style={styles.editBtnText}>Edit</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.deleteBtn} onPress={() => handleDelete(item._id)}>
-                        <Text style={styles.deleteBtnText}>🗑️ Delete</Text>
+                        <Text style={styles.deleteBtnText}>Delete</Text>
                     </TouchableOpacity>
                 </View>
             </TouchableOpacity>
@@ -251,19 +243,19 @@ export default function DashboardScreen({ navigation, route }) {
             <View style={styles.content}>
                 <View style={styles.header}>
                     <View style={styles.headerTop}>
-                        <Text style={styles.greeting}>Hello, {username} 🌸</Text>
+                        <Text style={styles.greeting}>Hello, {username}</Text>
                         <View style={styles.headerActions}>
                             <TouchableOpacity
                                 style={[styles.actionIcon, { backgroundColor: '#FFF0F5', marginRight: 10 }]}
                                 onPress={() => navigation.navigate('PremiumScrapbook', { userId })}
                             >
-                                <Text style={{ fontSize: 18 }}>✨ Studio</Text>
+                                <Text style={{ fontSize: 18 }}>Studio</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.actionIcon}
                                 onPress={() => navigation.navigate('Profile')}
                             >
-                                <Text style={{ fontSize: 20 }}>👤</Text>
+                                <Text style={{ fontSize: 20 }}>Profile</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -275,7 +267,6 @@ export default function DashboardScreen({ navigation, route }) {
                     )}
                 </View>
 
-                {/* Search Bar */}
                 <View style={styles.searchContainer}>
                     <TextInput
                         style={styles.searchBar}
@@ -286,7 +277,6 @@ export default function DashboardScreen({ navigation, route }) {
                     />
                 </View>
 
-                {/* Filter Tabs */}
                 <View style={styles.filterContainer}>
                     {['All', 'Journals', 'Scrapbooks'].map((cat) => {
                         const count = cat === 'All'
@@ -308,7 +298,6 @@ export default function DashboardScreen({ navigation, route }) {
                                     styles.filterText,
                                     activeFilter === cat && styles.filterTextActive
                                 ]}>
-                                    {cat === 'All' ? '📂 ' : (cat === 'Journals' ? '📝 ' : '✨ ')}
                                     {cat} ({count})
                                 </Text>
                             </TouchableOpacity>
@@ -344,9 +333,6 @@ export default function DashboardScreen({ navigation, route }) {
                         )}
                         ListEmptyComponent={
                             <View style={styles.emptyContainer}>
-                                <Text style={styles.emptyEmoji}>
-                                    {searchQuery ? '🔍' : (activeFilter === 'Scrapbooks' ? '✨' : '📝')}
-                                </Text>
                                 <Text style={styles.emptyText}>
                                     {searchQuery ? 'No matches found' : `No ${activeFilter.toLowerCase()} yet`}
                                 </Text>
@@ -363,7 +349,6 @@ export default function DashboardScreen({ navigation, route }) {
                     />
                 )}
 
-                {/* View Modal */}
                 <Modal
                     visible={isViewModalVisible}
                     animationType="fade"
@@ -404,7 +389,6 @@ export default function DashboardScreen({ navigation, route }) {
                     </View>
                 </Modal>
 
-                {/* Selection Modal */}
                 <Modal
                     visible={isSelectionModalVisible}
                     animationType="slide"
@@ -414,7 +398,7 @@ export default function DashboardScreen({ navigation, route }) {
                     <View style={styles.modalOverlay}>
                         <View style={[styles.modalContent, { padding: 30 }]}>
                             <Text style={[styles.modalTitle, { textAlign: 'center', marginBottom: 25 }]}>
-                                What would you like to create? ✨
+                                What would you like to create?
                             </Text>
 
                             <TouchableOpacity
@@ -424,7 +408,6 @@ export default function DashboardScreen({ navigation, route }) {
                                     navigation.navigate('AddEntry', { userId });
                                 }}
                             >
-                                <Text style={{ fontSize: 32, marginBottom: 10 }}>📝</Text>
                                 <Text style={styles.selectionBtnTitle}>Classic Journal</Text>
                                 <Text style={styles.selectionBtnSub}>Write your thoughts on paper</Text>
                             </TouchableOpacity>
@@ -436,7 +419,6 @@ export default function DashboardScreen({ navigation, route }) {
                                     navigation.navigate('PremiumScrapbook', { userId });
                                 }}
                             >
-                                <Text style={{ fontSize: 32, marginBottom: 10 }}>✨</Text>
                                 <Text style={[styles.selectionBtnTitle, { color: '#D88A9F' }]}>Artistic Scrapbook</Text>
                                 <Text style={styles.selectionBtnSub}>Stickers, quotes, and memories</Text>
                             </TouchableOpacity>
@@ -451,7 +433,6 @@ export default function DashboardScreen({ navigation, route }) {
                     </View>
                 </Modal>
 
-                {/* Edit Modal */}
                 <Modal
                     visible={isEditModalVisible}
                     animationType="slide"
@@ -484,7 +465,6 @@ export default function DashboardScreen({ navigation, route }) {
                     </View>
                 </Modal>
 
-                {/* Confirm Delete Popup */}
                 <Modal visible={confirmModal.visible} transparent animationType="fade">
                     <View style={styles.modalOverlay}>
                         <View style={[styles.modalContent, { alignItems: 'center', padding: 30 }]}>
@@ -501,7 +481,7 @@ export default function DashboardScreen({ navigation, route }) {
                                     style={[styles.modalBtn, { flex: 1, backgroundColor: '#FF7096' }]}
                                     onPress={confirmDelete}
                                 >
-                                    <Text style={{ color: '#fff', textAlign: 'center', fontWeight: '800' }}>Delete ✨</Text>
+                                    <Text style={{ color: '#fff', textAlign: 'center', fontWeight: '800' }}>Delete</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -599,7 +579,6 @@ const styles = StyleSheet.create({
     moodLabel: { fontSize: 11, fontWeight: '800', color: '#fff', textTransform: 'uppercase' },
     entryPreview: { fontSize: 15, color: theme.colors.text, lineHeight: 22 },
     emptyContainer: { alignItems: 'center', marginTop: 40 },
-    emptyEmoji: { fontSize: 50, marginBottom: 10 },
     emptyText: { fontSize: 16, fontWeight: '700', color: theme.colors.text },
     emptySubtext: { fontSize: 12, color: theme.colors.subText, marginTop: 4 },
     fab: {

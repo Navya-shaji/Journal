@@ -29,7 +29,6 @@ export default function AppNavigator() {
                     setUserParams(JSON.parse(userData));
                 }
             } catch (e) {
-                console.error('Session error', e);
             } finally {
                 setIsLoading(false);
             }

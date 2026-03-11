@@ -26,7 +26,6 @@ export default function PinLockScreen({ navigation, route }) {
                     setCorrectPin(profile.journalPin);
                 }
             } catch (error) {
-                console.error('Failed to fetch PIN:', error);
             } finally {
                 setLoading(false);
             }
@@ -112,7 +111,7 @@ export default function PinLockScreen({ navigation, route }) {
                     style={styles.key}
                     onPress={handleBackspace}
                 >
-                    <Text style={[styles.keyText, { fontSize: 18 }]}>⌫</Text>
+                    <Text style={[styles.keyText, { fontSize: 16 }]}>Del</Text>
                 </TouchableOpacity>
             </View>
 

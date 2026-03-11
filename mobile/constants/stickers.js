@@ -1,5 +1,3 @@
-// stickers.js – defines the available sticker assets
-// Adjust the `src` paths if you move the images into a dedicated stickers folder.
 export const stickers = [
     {
         id: 'bear',

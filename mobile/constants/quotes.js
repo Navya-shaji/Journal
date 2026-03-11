@@ -1,4 +1,3 @@
-// quotes.js – defines the available quote assets
 export const quotes = [
     {
         id: 'inspire1',

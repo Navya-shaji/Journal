@@ -1,14 +1,7 @@
-// StickerPicker.js – a modal grid of stickers
 import React from 'react';
-import { Modal, View, FlatList, TouchableOpacity, Image, StyleSheet, Text } from 'react-native';
+import { Modal, View, FlatList, TouchableOpacity, Image, StyleSheet, Text, Platform } from 'react-native';
 import { stickers } from '../constants/stickers';
 
-/**
- * Props:
- *   visible (bool) – whether the modal is shown
- *   onClose (fn) – called when the user dismisses the modal
- *   onSelectSticker (fn) – receives the selected sticker object
- */
 export default function StickerPicker({ visible, onClose, onSelectSticker }) {
     const renderItem = ({ item }) => (
         <TouchableOpacity

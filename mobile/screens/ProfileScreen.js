@@ -26,7 +26,6 @@ export default function ProfileScreen({ navigation }) {
                 const data = await getProfile();
                 setUser(data);
             } catch (error) {
-                console.error(error);
                 Alert.alert('Error', 'Failed to load profile');
             } finally {
                 setLoading(false);
@@ -44,9 +43,8 @@ export default function ProfileScreen({ navigation }) {
         setSaving(true);
         try {
             await updatePin(newPin);
-            Alert.alert('Success', 'Journal Pin updated successfully! ✨');
+            Alert.alert('Success', 'Journal Pin updated successfully!');
             setNewPin('');
-            // Refresh profile to show new pin if needed (though it's usually masked)
         } catch (error) {
             Alert.alert('Error', error.error || 'Failed to update pin');
         } finally {
@@ -74,7 +72,7 @@ export default function ProfileScreen({ navigation }) {
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-                    <Text style={styles.backBtnText}>🔙</Text>
+                    <Text style={styles.backBtnText}>Back</Text>
                 </TouchableOpacity>
                 <Text style={styles.title}>My Profile</Text>
                 <View style={{ width: 40 }} />
@@ -132,7 +130,7 @@ const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: theme.colors.background },
     header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20 },
     backBtn: { padding: 10 },
-    backBtnText: { fontSize: 20 },
+    backBtnText: { fontSize: 16, color: theme.colors.text, fontWeight: '600' },
     title: { fontSize: 22, fontWeight: '800', color: theme.colors.text },
     content: { flex: 1, padding: 24 },
     profileCard: { alignItems: 'center', marginBottom: 40 },

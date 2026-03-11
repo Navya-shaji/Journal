@@ -40,7 +40,6 @@ export default function LoginScreen({ navigation }) {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.container}
         >
-            {/* Decorative background elements */}
             <View style={[styles.circle, { top: -50, right: -50, backgroundColor: theme.colors.primaryPink }]} />
             <View style={[styles.circle, { bottom: -80, left: -60, backgroundColor: theme.colors.softLavender, width: 250, height: 250 }]} />
 

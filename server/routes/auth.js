@@ -3,20 +3,18 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
 
-// Middleware to verify JWT
 const auth = (req, res, next) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
     if (!token) return res.status(401).json({ error: 'No token, authorization denied' });
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded; // Should contain userId
+        req.user = decoded;
         next();
     } catch (e) {
         res.status(401).json({ error: 'Token is not valid' });
     }
 };
 
-// Register
 router.post('/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
@@ -34,7 +32,6 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// Login
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -49,9 +46,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Get User Profile
 router.get('/profile', auth, async (req, res) => {
-    console.log('👤 Fetching profile for user:', req.user.userId);
     try {
         const user = await User.findById(req.user.userId).select('-password');
         if (!user) return res.status(404).json({ error: 'User not found' });
@@ -61,7 +56,6 @@ router.get('/profile', auth, async (req, res) => {
     }
 });
 
-// Update User Pin
 router.put('/update-pin', auth, async (req, res) => {
     try {
         const { pin } = req.body;
