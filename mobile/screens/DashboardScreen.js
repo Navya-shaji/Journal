@@ -168,8 +168,8 @@ export default function DashboardScreen({ navigation, route }) {
         }
         try {
             const updated = await updateEntry(editingId, { content: editContent });
-            setEntries(prev => prev.map(e => e._id === editingId ? { ...e, content: updated.content } : e));
-            setFilteredEntries(prev => prev.map(e => e._id === editingId ? { ...e, content: updated.content } : e));
+            setEntries(prev => (prev || []).map(e => e._id === editingId ? { ...e, content: updated.content } : e));
+            setFilteredEntries(prev => (prev || []).map(e => e._id === editingId ? { ...e, content: updated.content } : e));
             setIsEditModalVisible(false);
             setEditingId(null);
             setEditContent('');
