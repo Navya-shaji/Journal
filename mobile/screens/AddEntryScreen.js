@@ -155,7 +155,7 @@ export default function AddEntryScreen({ navigation, route }) {
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: '#5D4037' }]}>
             <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                behavior={Platform.OS === 'web' ? undefined : (Platform.OS === 'ios' ? 'padding' : 'height')}
                 style={styles.bookWrapper}
             >
                 <View style={styles.header}>
@@ -300,11 +300,13 @@ const styles = StyleSheet.create({
     stickerLayer: { ...StyleSheet.absoluteFillObject, zIndex: 10 },
     input: {
         flex: 1,
+        width: '100%',
         fontSize: 19,
         lineHeight: 29,
         textAlignVertical: 'top',
-        zIndex: 5,
-        fontFamily: Platform.OS === 'ios' ? 'Snell Roundhand' : 'serif'
+        zIndex: 20,
+        paddingTop: 10,
+        fontFamily: Platform.OS === 'ios' ? 'Snell Roundhand' : (Platform.OS === 'web' ? 'cursive, serif' : 'serif')
     },
     floatingTool: {
         position: 'absolute',
