@@ -31,11 +31,21 @@ app.get('/api/ping', (req, res) => {
 });
 
 // Database Connection
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('✅ Connected to MongoDB'))
-    .catch(err => {
-        console.error('❌ MongoDB Connection Error:', err.message);
-    });
+const mongoURI = process.env.MONGODB_URI;
+
+if (!mongoURI) {
+    console.error('❌ MONGODB_URI is not defined in environment variables');
+} else {
+    // Log connection attempt (hiding credentials)
+    const sanitizedURI = mongoURI.replace(/\/\/.*@/, '//****:****@');
+    console.log(`🔌 Attempting to connect to MongoDB: ${sanitizedURI}`);
+
+    mongoose.connect(mongoURI)
+        .then(() => console.log('✅ Connected to MongoDB'))
+        .catch(err => {
+            console.error('❌ MongoDB Connection Error:', err.message);
+        });
+}
 
 // Conditionally listen for local development
 if (require.main === module) {
