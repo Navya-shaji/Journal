@@ -36,13 +36,17 @@ if (mongoURI) {
     });
 }
 
-app.get('/api/health', (req, res) => {
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', location: 'root' });
+});
+
+app.get('/api/status', (req, res) => {
     res.json({
         status: 'ok',
-        database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+        database: mongoose.connection.readyState === 1 ? 'connected' : 'connecting/disconnected',
+        readyState: mongoose.connection.readyState,
         env: {
             hasMongoUri: !!(process.env.MONGODB_URI || process.env.MONGO_URL),
-            nodeEnv: process.env.NODE_ENV
         }
     });
 });
