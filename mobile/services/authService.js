@@ -5,6 +5,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'https://journal-w9ls.onrender.com/api';
 const API_URL = BASE_URL.endsWith('/api') ? `${BASE_URL}/auth` : (BASE_URL.endsWith('/api/') ? `${BASE_URL}auth` : `${BASE_URL}/auth`);
 
+export const googleLogin = async (idToken) => {
+    try {
+        const response = await axios.post(`${API_URL}/google-login`, { idToken });
+        const { token, username, userId, profilePic } = response.data;
+
+        await AsyncStorage.setItem('userToken', token);
+        await AsyncStorage.setItem('userData', JSON.stringify({ username, userId, profilePic }));
+
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || { error: 'Google Login failed' };
+    }
+};
+
 export const login = async (email, password) => {
     try {
         const response = await axios.post(`${API_URL}/login`, { email, password });

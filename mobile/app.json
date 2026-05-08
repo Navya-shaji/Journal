@@ -1,21 +1,28 @@
 {
-    "expo": {
-        "name": "JournalApp",
-        "slug": "journal-app",
-        "version": "1.0.0",
-        "orientation": "portrait",
-        "userInterfaceStyle": "light",
-        "assetBundlePatterns": [
-            "**/*"
-        ],
-        "ios": {
-            "supportsTablet": true
-        },
-        "android": {
-            "backgroundColor": "#ffffff"
-        },
-        "web": {
-            "backgroundColor": "#ffffff"
-        }
-    }
+  "expo": {
+    "name": "Journaling App",
+    "slug": "journal-app",
+    "version": "1.0.0",
+    "scheme": "journal-app",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.navya.journalapp"
+    },
+    "android": {
+      "package": "com.navya.journalapp",
+      "backgroundColor": "#ffffff"
+    },
+    "web": {
+      "backgroundColor": "#ffffff"
+    },
+    "plugins": [
+      "expo-asset",
+      "expo-web-browser"
+    ]
+  }
 }

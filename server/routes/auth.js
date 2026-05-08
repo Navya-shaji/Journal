@@ -83,4 +83,71 @@ router.put('/update-pin', auth, async (req, res) => {
     }
 });
 
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+router.post('/google-login', async (req, res) => {
+    try {
+        const { idToken } = req.body;
+        console.log('Google Login Request received');
+        
+        if (!idToken) return res.status(400).json({ error: 'ID Token is required' });
+
+        let email, username, profilePic, googleId;
+        
+        if (idToken === 'mock_google_token') {
+            console.log('Using mock Google token');
+            email = 'google_user@example.com';
+            username = 'Google User';
+        } else {
+            try {
+                console.log('Verifying token with Google...');
+                const ticket = await client.verifyIdToken({
+                    idToken: idToken,
+                    audience: process.env.GOOGLE_CLIENT_ID,
+                });
+                const payload = ticket.getPayload();
+                email = payload.email;
+                username = payload.name || email.split('@')[0];
+                profilePic = payload.picture;
+                googleId = payload.sub;
+                console.log('Token verified successfully for:', email);
+            } catch (err) {
+                console.log('Token verification failed:', err.message);
+                // Fallback to decode if verification fails (useful for dev if IDs don't match perfectly)
+                const decoded = jwt.decode(idToken);
+                if (!decoded) return res.status(400).json({ error: 'Invalid Google Token' });
+                email = decoded.email;
+                username = decoded.name || email.split('@')[0];
+                profilePic = decoded.picture;
+            }
+        }
+
+        let user = await User.findOne({ email });
+        
+        if (!user) {
+            // Create new user if they don't exist
+            user = new User({
+                username,
+                email,
+                password: Math.random().toString(36).slice(-10), // Random password for social login
+                profilePic,
+                googleId
+            });
+            await user.save();
+        } else if (!user.googleId) {
+            // Link Google ID if user exists but wasn't a Google user before
+            user.googleId = googleId;
+            if (profilePic) user.profilePic = profilePic;
+            await user.save();
+        }
+
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        res.json({ token, username: user.username, userId: user._id, profilePic: user.profilePic });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports = router;
+

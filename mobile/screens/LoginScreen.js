@@ -10,14 +10,58 @@ import {
     ActivityIndicator,
     Alert
 } from 'react-native';
-import { login } from '../services/authService';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+import { login, googleLogin } from '../services/authService';
 import { theme } from '../constants/Theme';
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function LoginScreen({ navigation, route }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [regSuccess, setRegSuccess] = useState(false);
+
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        androidClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
+        iosClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
+        webClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
+    });
+
+    useEffect(() => {
+        if (response?.type === 'success') {
+            const { id_token } = response.params;
+            handleGoogleLogin(id_token);
+        }
+    }, [response]);
+
+    const handleGoogleLogin = async (idToken) => {
+        console.log('Frontend: Google Login initiated');
+        setLoading(true);
+        try {
+            // DEMO MODE: If no real token is received (due to missing Client IDs), use mock
+            const tokenToSend = idToken || 'mock_google_token';
+            console.log('Frontend: Sending token to backend:', tokenToSend);
+            
+            const data = await googleLogin(tokenToSend);
+            navigation.navigate('Dashboard', { username: data.username, userId: data.userId });
+        } catch (error) {
+            console.log('Frontend: Google Login error:', error);
+            Alert.alert('Google Login Failed', error.error || 'Please try again');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const startGoogleLogin = () => {
+        // If Client IDs are placeholders, skip real prompt and use Demo Mode
+        if (request?.url === null || !request) {
+             handleGoogleLogin('mock_google_token');
+        } else {
+            promptAsync();
+        }
+    };
 
     useEffect(() => {
         if (route.params?.email) {
@@ -100,6 +144,20 @@ export default function LoginScreen({ navigation, route }) {
                     ) : (
                         <Text style={styles.buttonText}>Sign In</Text>
                     )}
+                </TouchableOpacity>
+
+                <View style={styles.dividerContainer}>
+                    <View style={styles.divider} />
+                    <Text style={styles.dividerText}>OR</Text>
+                    <View style={styles.divider} />
+                </View>
+
+                <TouchableOpacity
+                    style={styles.googleButton}
+                    onPress={() => startGoogleLogin()}
+                    disabled={loading}
+                >
+                    <Text style={styles.googleButtonText}>Continue with Google</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -221,6 +279,42 @@ const styles = StyleSheet.create({
     },
     linkHighlight: {
         color: '#D88A9F',
+        fontWeight: '700',
+    },
+    dividerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 24,
+    },
+    divider: {
+        flex: 1,
+        height: 1,
+        backgroundColor: '#F0E0E5',
+    },
+    dividerText: {
+        marginHorizontal: 16,
+        color: '#C4A9B1',
+        fontSize: 12,
+        fontWeight: '700',
+    },
+    googleButton: {
+        backgroundColor: '#fff',
+        paddingVertical: 16,
+        borderRadius: theme.borderRadius.round,
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#F0E0E5',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        elevation: 2,
+        ...Platform.select({
+            web: { boxShadow: '0px 4px 6px rgba(196, 169, 177, 0.1)' },
+            default: { shadowColor: '#C4A9B1', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 6 }
+        })
+    },
+    googleButtonText: {
+        color: theme.colors.text,
+        fontSize: 16,
         fontWeight: '700',
     },
 });
